@@ -26,6 +26,7 @@ jobs:
           git clone https://git.drupalcode.org/project/drupal_cms.git
       - name: Install dependencies in trial and find latest version
         run: |
+          patch --help
           cd drupal_cms/trial
           npm ci
           export latest_version=$(npm view php-wasm-zlib --json | jq -r '.time | to_entries | last | .key')
