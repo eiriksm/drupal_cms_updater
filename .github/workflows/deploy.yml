@@ -43,7 +43,7 @@ jobs:
             done
             npm clean-install
             npx patch-package php-cgi-wasm
-            rm rm artifact_assets/patches/npm/php-cgi-wasm*
+            rm artifact_assets/patches/npm/php-cgi-wasm*
             mv patches/php-cgi-wasm* artifact_assets/patches/npm/
             git add .
             git diff --staged
