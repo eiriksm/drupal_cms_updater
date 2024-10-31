@@ -40,7 +40,11 @@ jobs:
               echo "Installing: $package"
               npm i $package@$latest_version -S --save-exact
             done
-            git diff
+            npx patch-package php-cgi-wasm
+            rm rm artifact_assets/patches/npm/php-cgi-wasm*
+            mv patches/php-cgi-wasm* artifact_assets/patches/npm/
+            git add .
+            git diff --staged
             exit 1
           else
             exit 0
