@@ -31,14 +31,14 @@ jobs:
           export latest_version=$(npm view php-wasm-zlib --json | jq -r '.time | to_entries | last | .key')
           # Try to install it, and see if we have a diff
           npm i php-wasm-zlib@$latest_version -S --save-exact
-          git diff --exit-code > /dev/null
-          if [ $? -ne 0 ]; then
+          diff_exists=$(git diff --exit-code > /dev/null && echo "true" || echo "false")
+          if [ "$diff_exists" == "true" ]; then
             export packages_to_install=$(cat package.json | jq -r '.devDependencies | to_entries | .[].key' | grep php)
             # Loop through each line in the variable
             echo "$packages_to_install" | while IFS= read -r package; do
               # Execute your command with the current line
               echo "Installing: $package"
-              npm i $package -S --save-exact
+              npm i $package@$latest_version -S --save-exact
             done
             git diff
             exit 1
