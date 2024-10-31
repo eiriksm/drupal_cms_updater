@@ -28,7 +28,7 @@ jobs:
         run: |
           patch --help
           cd drupal_cms/trial
-          npm ci
+          npm clean-install
           export latest_version=$(npm view php-wasm-zlib --json | jq -r '.time | to_entries | last | .key')
           # Try to install it, and see if we have a diff
           npm i php-wasm-zlib@$latest_version -S --save-exact
@@ -41,6 +41,7 @@ jobs:
               echo "Installing: $package"
               npm i $package@$latest_version -S --save-exact
             done
+            npm clean-install
             npx patch-package php-cgi-wasm
             rm rm artifact_assets/patches/npm/php-cgi-wasm*
             mv patches/php-cgi-wasm* artifact_assets/patches/npm/
