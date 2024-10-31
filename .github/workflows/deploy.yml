@@ -1,0 +1,30 @@
+name: Check new version of those packages
+on:
+  # manually
+  workflow_dispatch:
+  # also on webhooks
+  repository_dispatch:
+  pull_request:
+  push:
+    branches:
+      - main
+  schedule:
+    # * is a special character in YAML so you have to quote this string
+    - cron: '32 * * * *'
+
+jobs:
+  build:
+    name: Build SAs nightly
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Clone drupal cms
+        run: |
+          git clone https://git.drupalcode.org/project/drupal_cms.git
+      - name: Install dependencies in trial
+        run: |
+          cd trial
+          npm ci
